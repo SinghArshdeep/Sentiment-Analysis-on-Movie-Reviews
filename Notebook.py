@@ -3,7 +3,7 @@
 
 # # Sentiment Analysis
 
-# In[3]:
+# In[1]:
 
 
 import pandas as pd 
@@ -29,7 +29,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn_pandas import DataFrameMapper
 
 
-# In[4]:
+# In[2]:
 
 
 df_train_data = pd.read_csv("train.tsv", sep="\t")
@@ -39,7 +39,7 @@ df_test_data = pd.read_csv("test.tsv", sep="\t")
 # # Data Analysis 
 # It is always better to go through the data first to know what its distribution. 
 
-# In[5]:
+# In[3]:
 
 
 print("Total numbers of Phrases available: {}" .format(len(df_train_data)))
@@ -52,7 +52,7 @@ print('Percentage of Positive reviews: {:.2f}%'.format((df_train_data['Sentiment
 
 # This shows that though we have a large amount of data in our hands, the distribution is not equal and may need some extra work. Their is a strong bias with Neutral reviews and a very small amount of data of Negative/Positive reviews. 
 
-# In[63]:
+# In[4]:
 
 
 review4= (df_train_data[df_train_data['Sentiment'] == 4])
@@ -81,7 +81,7 @@ plt.ylabel('Probability', fontsize=15)
 
 # Neutral reviews tend to be shorter and people like to write a slightly more when they had a bad experience.
 
-# In[83]:
+# In[5]:
 
 
 cloud = WordCloud(width=1440, height=1080, max_font_size=100).generate(" ".join(review0['Phrase'].astype(str)))
@@ -92,7 +92,7 @@ plt.title("Common words in a Negative Review", fontsize = 15)
 plt.show()
 
 
-# In[79]:
+# In[6]:
 
 
 cloud = WordCloud(width=1440, height=1080).generate(" ".join(review1['Phrase'].astype(str)))
@@ -103,7 +103,7 @@ plt.title("Common words in a Somewhat Negative Review", fontsize = 15)
 plt.show()
 
 
-# In[80]:
+# In[7]:
 
 
 cloud = WordCloud(width=1440, height=1080).generate(" ".join(review2['Phrase'].astype(str)))
@@ -114,7 +114,7 @@ plt.title("Common words in a Neutral Review", fontsize = 15)
 plt.show()
 
 
-# In[81]:
+# In[8]:
 
 
 cloud = WordCloud(width=1440, height=1080).generate(" ".join(review3['Phrase'].astype(str)))
@@ -125,7 +125,7 @@ plt.title("Common words in a Somwhat Positive Review", fontsize = 15)
 plt.show()
 
 
-# In[82]:
+# In[9]:
 
 
 cloud = WordCloud(width=1440, height=1080).generate(" ".join(review4['Phrase'].astype(str)))
@@ -156,7 +156,7 @@ plt.show()
 # 
 # LINK: http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm
 
-# In[6]:
+# In[10]:
 
 
 df_train_data['anger'] = float(0)
@@ -180,7 +180,7 @@ df_test_data['trust'] = float(0)
 df_test_data['No. of Words'] = float(0)
 
 
-# In[7]:
+# In[11]:
 
 
 anger = {}
@@ -230,7 +230,7 @@ for line in open("NRC-Sentiment-Emotion-Lexicons/NRC-Emotion-Intensity-Lexicon-v
 
 # The following functions are to process the data and extract features from the phrases.
 
-# In[8]:
+# In[12]:
 
 
 # Remove punctuation, stopwords from a text and lemmatize it. 
@@ -241,7 +241,7 @@ def lemmatizeText(words):
     return wordList
 
 
-# In[9]:
+# In[13]:
 
 
 # Process a given string 
@@ -286,7 +286,7 @@ def initialiseEmotion(df):
     df['Lemmatized Words'] = pd.Series(strings)
 
 
-# In[10]:
+# In[14]:
 
 
 initialiseEmotion(df_train_data)
@@ -295,7 +295,7 @@ initialiseEmotion(df_test_data)
 
 # See how the emotions relate to our data and check if the above prediction is correct
 
-# In[12]:
+# In[15]:
 
 
 y_values = {}
@@ -322,7 +322,7 @@ plt.title("Emotions in a Negative Review", fontsize = 15)
 plt.show()
 
 
-# In[13]:
+# In[16]:
 
 
 y_values = {}
@@ -349,7 +349,7 @@ plt.title("Emotions in a Somewhat Negative Review", fontsize = 15)
 plt.show()
 
 
-# In[14]:
+# In[17]:
 
 
 y_values = {}
@@ -376,7 +376,7 @@ plt.title("Emotions in a Neutral Review", fontsize = 15)
 plt.show()
 
 
-# In[15]:
+# In[18]:
 
 
 y_values = {}
@@ -403,7 +403,7 @@ plt.title("Emotions in a Somewhat Positive Review", fontsize = 15)
 plt.show()
 
 
-# In[16]:
+# In[20]:
 
 
 y_values = {}
@@ -426,7 +426,7 @@ plot[5].set_color('purple')
 plot[6].set_color('g')
 plot[7].set_color('black')
 plt.xticks(range(len(y_values)), list(y_values.keys()))
-plt.title("Emotions in a Somewhat Positive Review", fontsize = 15)
+plt.title("Emotions in a Positive Review", fontsize = 15)
 plt.show()
 
 
@@ -587,7 +587,7 @@ Y = mapp.transform(df_test_data)
 Y_sparse = sp.sparse.csr_matrix(Y, dtype=np.int32)
 
 
-# In[42]:
+# In[ ]:
 
 
 model.fit(X_sparse, df_train_data['Sentiment'])
@@ -596,4 +596,10 @@ test = pd.DataFrame()
 test['PhraseId'] = df_test_data['PhraseId']
 test['Sentiment'] = predictions
 test.to_csv('simple_sub.csv', index=False)
+
+
+# In[ ]:
+
+
+
 
